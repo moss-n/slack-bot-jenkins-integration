@@ -10,7 +10,7 @@ func main() {
     api := slack.New(os.Getenv("SLACK_BOT_TOKEN"))
     args := os.Args[1:]
     fmt.Println(args)
-	preText := "Hello! Your Jenkins build has finished!"
+	preText := "*Hello! Your Jenkins build has finished!*"
 	jenkinsURL := "*Build URL:* " + args[0]
 	buildResult  := "*" + args[1] + "*"
 	buildNumber := "*" + args[2] + "*"
@@ -21,7 +21,7 @@ func main() {
 	} else {
 		buildResult = buildResult + " :x:"
 	}
-
+	dividerSection := slack.NewDividerBlock()
 	jenkinsBuildDetails := jobName + " #" + buildNumber + " - " + buildResult + "\n" + jenkinsURL
 	preTextField := slack.NewTextBlockObject("mrkdwn", preText + "\n\n", false, false)
 	jenkinsBuildDetailsField := slack.NewTextBlockObject("mrkdwn", jenkinsBuildDetails, false, false)
@@ -33,6 +33,7 @@ func main() {
 	preTextSection := slack.NewSectionBlock(preTextField, nil, nil)
 	msg := slack.MsgOptionBlocks(
 		preTextSection, 
+		dividerSection,
 		fieldsSection,
 	)
 	_, _, _, err := api.SendMessage(
