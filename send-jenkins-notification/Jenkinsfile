@@ -7,9 +7,6 @@ pipeline {
         stage('Checkout Codebase') {
             steps{
                 checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'github-ssh-key', url: 'git@github.com:mnorm88/slack-bot-jenkins-integration.git']]]
-                step{
-                    checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'github-ssh-key', url: 'git@github.com:mnorm88/pointers-in-c.git']]]
-                }
             }
         }
 
@@ -38,8 +35,6 @@ pipeline {
     post {
 
  always {
-     sh "pwd"
-     sh "ls"
      echo 'Sending slack message'
      sh "go run send-jenkins-notification/slack-notification.go ${BUILD_URL} ${currentBuild.currentResult} ${BUILD_NUMBER} ${JOB_NAME} "
       }
