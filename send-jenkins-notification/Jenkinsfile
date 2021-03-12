@@ -1,42 +1,38 @@
 pipeline {
 
-    agent any
+    agent any 
 
     stages {
-
-        stage('Checkout Codebase') {
+        stage('Checkout Codebase'){
             steps{
-                checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'github-ssh-key', url: 'git@github.com:mnorm88/slack-bot-jenkins-integration.git']]]
+                checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'github-ssh-key', url: 'git@github.com:mnorm88/slack-bot-jenkins-integration.git']]] 
             }
         }
 
         stage('Build') {
             steps {
-                sh 'echo Building Codebase!'
+                echo 'Building Codebase'
             }
         }
 
         stage('Test'){
-            steps{
-                sh 'echo Running Tests on changes'
+            steps {
+                echo 'Running Tests on changes'
             }
         }
-
+        
         stage('Deploy'){
             steps{
-               
-                sh 'pwd; ls'
                 echo 'Done!'
-                
             }
         }
     }
 
     post {
 
- always {
-     echo 'Sending slack message'
-     sh "go run send-jenkins-notification/slack-notification.go ${BUILD_URL} ${currentBuild.currentResult} ${BUILD_NUMBER} ${JOB_NAME} "
-      }
+        always {
+            echo 'Sending Slack message'
+            sh "go run send-jenkins-notification/slack-notification.go ${BUILD_URL} ${currentBuild.currentResult} ${BUILD_NUMBER} ${JOB_NAME} "
+        }
     }
 }
