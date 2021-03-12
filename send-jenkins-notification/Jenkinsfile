@@ -7,8 +7,9 @@ pipeline {
         stage('Checkout Codebase') {
             steps{
                 checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'github-ssh-key', url: 'git@github.com:mnorm88/slack-bot-jenkins-integration.git']]]
-                checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'github-ssh-key', url: 'git@github.com:mnorm88/pointers-in-c.git']]]
-
+                step("HELLO"){
+                    checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'github-ssh-key', url: 'git@github.com:mnorm88/pointers-in-c.git']]]
+                }
             }
         }
 
