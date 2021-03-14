@@ -18,15 +18,22 @@ type jenkinsBuild struct {
 
 func sendSlackMessage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<h1>Sent Slack Message!</h1>")
+	build := jenkinsBuild{}
+    err0 := json.NewDecoder(r.Body).Decode(&build)
+    if err0 != nil {
+        http.Error(w, err0.Error(), http.StatusBadRequest)
+        return
+    }
 
 	api := slack.New(os.Getenv("SLACK_BOT_TOKEN"))
-
+/*
 	jenkinsBuildJSON := `{"buildurl": "http://localhost", "buildresult": "SUCCESS", "buildnumber": 120, "jobname": "test-job"}`
     build := jenkinsBuild{}
     json.Unmarshal([]byte(jenkinsBuildJSON), &build)
 	if err := json.Unmarshal([]byte(jenkinsBuildJSON), &build); err != nil {
         panic(err)
     }
+*/
 	fmt.Println(build)
 	jenkinsURL := "*Build URL:* " + build.BuildURL
 	buildResult := "*" +  build.BuildResult + "*"
