@@ -32,7 +32,7 @@ pipeline {
 
         always {
             echo 'Sending Slack message'
-            sh "curl --header 'Content-Type: application/json' --request POST --data '{\"buildurl\": \"${BUILD_URL}\",\"buildresult\": \"{currentBuild.currentResult}\", \"buildnumber\": ${BUILD_NUMBER}, \"jobname\":\"${JOB_NAME}\"}' http://172.17.0.1:8091/sendSlackMessage"
+            sh "curl --header 'Content-Type: application/json' --request POST --data '{\"buildurl\": \"${BUILD_URL}\",\"buildresult\": \"${currentBuild.currentResult}\", \"buildnumber\": ${BUILD_NUMBER}, \"jobname\":\"${JOB_NAME}\"}' http://172.17.0.1:8091/sendSlackMessage"
         }
     }
 }
